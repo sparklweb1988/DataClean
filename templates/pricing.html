@@ -1,0 +1,347 @@
+{% extends "base.html" %}
+
+{% block title %}
+Pricing - DataClean Pro
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="text-center mb-5">
+
+        <h1 class="fw-bold">
+            Choose Your DataClean Pro Plan
+        </h1>
+
+        <p class="text-muted">
+            Start free and upgrade when your data needs grow.
+        </p>
+
+    </div>
+
+
+    <div class="row g-4 justify-content-center">
+
+
+        <!-- FREE -->
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="card h-100 shadow-sm border-0">
+
+                <div class="card-body text-center p-4">
+
+                    <span class="badge bg-secondary mb-3">
+                        FREE
+                    </span>
+
+                    <h3 class="fw-bold">
+                        Free
+                    </h3>
+
+                    <p class="text-muted">
+                        For trying DataClean Pro.
+                    </p>
+
+                    <h1 class="my-4">
+                        ₦0
+                        <small class="fs-6 text-muted">
+                            /month
+                        </small>
+                    </h1>
+
+                    <hr>
+
+                    <p>✓ Limited monthly usage</p>
+                    <p>✓ CSV & Excel cleaning</p>
+                    <p>✓ Duplicate detection</p>
+                    <p>✓ Missing value detection</p>
+                    <p>✓ Basic cleaning</p>
+                    <p>✓ Download cleaned data</p>
+
+
+                    {% if user.is_authenticated %}
+
+                        <form
+                            action="/payments/free/"
+                            method="post"
+                            class="mt-4"
+                        >
+
+                            {% csrf_token %}
+
+                            <button
+                                class="btn btn-outline-primary w-100"
+                            >
+                                Start Free
+                            </button>
+
+                        </form>
+
+                    {% else %}
+
+                        <a
+                            href="/register/"
+                            class="btn btn-outline-primary w-100 mt-4"
+                        >
+                            Start Free
+                        </a>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- BASIC -->
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="card h-100 shadow-sm border-0">
+
+                <div class="card-body text-center p-4">
+
+                    <span class="badge bg-primary mb-3">
+                        BASIC
+                    </span>
+
+                    <h3 class="fw-bold">
+                        Basic
+                    </h3>
+
+                    <p class="text-muted">
+                        For individuals and small datasets.
+                    </p>
+
+                    <h1 class="my-4">
+                        ₦5,000
+                        <small class="fs-6 text-muted">
+                            /month
+                        </small>
+                    </h1>
+
+                    <hr>
+
+                    <p>✓ 10,000 rows/month</p>
+                    <p>✓ 1 API key</p>
+                    <p>✓ CSV & Excel</p>
+                    <p>✓ Duplicate detection</p>
+                    <p>✓ Missing values</p>
+                    <p>✓ Data cleaning</p>
+                    <p>✓ Download data</p>
+
+
+                    {% if user.is_authenticated %}
+
+                        <form
+                            action="/payments/initialize/"
+                            method="post"
+                            class="mt-4"
+                        >
+
+                            {% csrf_token %}
+
+                            <input
+                                type="hidden"
+                                name="plan"
+                                value="basic"
+                            >
+
+                            <button
+                                class="btn btn-primary w-100"
+                            >
+                                Subscribe
+                            </button>
+
+                        </form>
+
+                    {% else %}
+
+                        <a
+                            href="/login/"
+                            class="btn btn-primary w-100 mt-4"
+                        >
+                            Login to Subscribe
+                        </a>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- PRO -->
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="card h-100 shadow border-primary">
+
+                <div class="card-header bg-primary text-white text-center">
+                    <strong>MOST POPULAR</strong>
+                </div>
+
+
+                <div class="card-body text-center p-4">
+
+                    <span class="badge bg-primary mb-3">
+                        PRO
+                    </span>
+
+                    <h3 class="fw-bold">
+                        Pro
+                    </h3>
+
+                    <p class="text-muted">
+                        For professionals and businesses.
+                    </p>
+
+                    <h1 class="my-4">
+                        ₦15,000
+                        <small class="fs-6 text-muted">
+                            /month
+                        </small>
+                    </h1>
+
+                    <hr>
+
+                    <p>✓ 100,000 rows/month</p>
+                    <p>✓ 5 API keys</p>
+                    <p>✓ CSV & Excel</p>
+                    <p>✓ Advanced cleaning</p>
+                    <p>✓ Larger datasets</p>
+                    <p>✓ Priority processing</p>
+
+
+                    {% if user.is_authenticated %}
+
+                        <form
+                            action="/payments/initialize/"
+                            method="post"
+                            class="mt-4"
+                        >
+
+                            {% csrf_token %}
+
+                            <input
+                                type="hidden"
+                                name="plan"
+                                value="pro"
+                            >
+
+                            <button
+                                class="btn btn-success w-100"
+                            >
+                                Subscribe
+                            </button>
+
+                        </form>
+
+                    {% else %}
+
+                        <a
+                            href="/login/"
+                            class="btn btn-success w-100 mt-4"
+                        >
+                            Login to Subscribe
+                        </a>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- BUSINESS -->
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="card h-100 shadow-sm border-0">
+
+                <div class="card-body text-center p-4">
+
+                    <span class="badge bg-dark mb-3">
+                        BUSINESS
+                    </span>
+
+                    <h3 class="fw-bold">
+                        Business
+                    </h3>
+
+                    <p class="text-muted">
+                        For teams and high-volume processing.
+                    </p>
+
+                    <h1 class="my-4">
+                        ₦50,000
+                        <small class="fs-6 text-muted">
+                            /month
+                        </small>
+                    </h1>
+
+                    <hr>
+
+                    <p>✓ 1,000,000 rows/month</p>
+                    <p>✓ Unlimited API keys</p>
+                    <p>✓ CSV & Excel</p>
+                    <p>✓ Advanced processing</p>
+                    <p>✓ High-volume processing</p>
+                    <p>✓ Advanced workflows</p>
+
+
+                    {% if user.is_authenticated %}
+
+                        <form
+                            action="/payments/initialize/"
+                            method="post"
+                            class="mt-4"
+                        >
+
+                            {% csrf_token %}
+
+                            <input
+                                type="hidden"
+                                name="plan"
+                                value="business"
+                            >
+
+                            <button
+                                class="btn btn-dark w-100"
+                            >
+                                Subscribe
+                            </button>
+
+                        </form>
+
+                    {% else %}
+
+                        <a
+                            href="/login/"
+                            class="btn btn-dark w-100 mt-4"
+                        >
+                            Login to Subscribe
+                        </a>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

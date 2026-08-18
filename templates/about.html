@@ -1,0 +1,268 @@
+{% extends "base.html" %}
+
+{% block title %}
+About Us - DataClean Pro
+{% endblock %}
+
+{% block content %}
+
+<section class="py-5">
+
+    <div class="container">
+
+        <!-- HEADER -->
+
+        <div class="text-center mb-5">
+
+            <span class="badge bg-primary-subtle text-primary mb-3">
+                About DataClean Pro
+            </span>
+
+            <h1 class="fw-bold">
+                Clean Data. Better Decisions.
+            </h1>
+
+            <p class="text-muted lead mt-3">
+                DataClean Pro helps businesses, analysts and
+                professionals clean and prepare their Excel
+                and CSV datasets faster.
+            </p>
+
+        </div>
+
+
+        <!-- ABOUT -->
+
+        <div class="row align-items-center g-5 mb-5">
+
+            <div class="col-lg-6">
+
+                <div class="card border-0 shadow-sm">
+
+                    <div class="card-body p-5">
+
+                        <div class="fs-1 text-primary mb-3">
+
+                            <i class="bi bi-database-check"></i>
+
+                        </div>
+
+                        <h3 class="fw-bold mb-3">
+                            What is DataClean Pro?
+                        </h3>
+
+                        <p class="text-muted">
+
+                            DataClean Pro is a data cleaning platform
+                            designed to make the process of preparing
+                            messy datasets simple and efficient.
+
+                        </p>
+
+                        <p class="text-muted mb-0">
+
+                            Instead of manually searching through
+                            thousands of rows, you can upload your
+                            dataset and identify common data quality
+                            problems quickly.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-lg-6">
+
+                <h3 class="fw-bold mb-3">
+                    Why We Built DataClean Pro
+                </h3>
+
+                <p class="text-muted">
+
+                    Working with raw data can take hours. Duplicate
+                    records, missing values, empty rows, unnecessary
+                    columns and inconsistent whitespace can make
+                    analysis difficult.
+
+                </p>
+
+                <p class="text-muted">
+
+                    DataClean Pro provides simple tools that help
+                    users prepare their datasets before using them
+                    for reporting, analysis, visualization or
+                    business decisions.
+
+                </p>
+
+                <p class="text-muted">
+
+                    Our goal is simple:
+
+                </p>
+
+                <div class="alert alert-primary border-0">
+
+                    <strong>
+                        Spend less time fixing messy data and more
+                        time understanding your data.
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- FEATURES -->
+
+        <div class="text-center mb-4">
+
+            <h2 class="fw-bold">
+                What You Can Do
+            </h2>
+
+            <p class="text-muted">
+                Simple tools for common data cleaning tasks.
+            </p>
+
+        </div>
+
+
+        <div class="row g-4">
+
+
+            <div class="col-md-4">
+
+                <div class="card border-0 shadow-sm h-100">
+
+                    <div class="card-body p-4">
+
+                        <i class="bi bi-files fs-1 text-primary"></i>
+
+                        <h5 class="fw-bold mt-3">
+                            Upload Excel & CSV
+                        </h5>
+
+                        <p class="text-muted mb-0">
+
+                            Upload your datasets and prepare
+                            them for cleaning and analysis.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-4">
+
+                <div class="card border-0 shadow-sm h-100">
+
+                    <div class="card-body p-4">
+
+                        <i class="bi bi-copy fs-1 text-danger"></i>
+
+                        <h5 class="fw-bold mt-3">
+                            Find Duplicates
+                        </h5>
+
+                        <p class="text-muted mb-0">
+
+                            Identify duplicate records that
+                            could affect your analysis.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-4">
+
+                <div class="card border-0 shadow-sm h-100">
+
+                    <div class="card-body p-4">
+
+                        <i class="bi bi-check-circle fs-1 text-success"></i>
+
+                        <h5 class="fw-bold mt-3">
+                            Prepare Clean Data
+                        </h5>
+
+                        <p class="text-muted mb-0">
+
+                            Fix common data quality problems
+                            and download your cleaned dataset.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- CTA -->
+
+        <div class="bg-dark text-white rounded-4 p-5 text-center mt-5">
+
+            <h2 class="fw-bold">
+                Ready to clean your data?
+            </h2>
+
+            <p class="text-white-50 mb-4">
+
+                Start cleaning your Excel and CSV datasets
+                with DataClean Pro.
+
+            </p>
+
+            {% if user.is_authenticated %}
+
+                <a
+                    href="{% url 'upload' %}"
+                    class="btn btn-primary btn-lg"
+                >
+
+                    <i class="bi bi-cloud-upload me-1"></i>
+
+                    Upload Dataset
+
+                </a>
+
+            {% else %}
+
+                <a
+                    href="{% url 'register' %}"
+                    class="btn btn-primary btn-lg"
+                >
+
+                    Get Started
+
+                </a>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

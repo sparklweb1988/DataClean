@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ post.title }} - DataClean Pro
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-9">
+
+
+            {% if post.featured_image %}
+
+                <img
+                    src="{{ post.featured_image.url }}"
+                    class="img-fluid rounded shadow-sm mb-4"
+                    alt="{{ post.title }}"
+                >
+
+            {% endif %}
+
+
+            <div class="mb-4">
+
+                <small class="text-muted">
+
+                    {{ post.created_at|date:"F d, Y" }}
+
+                </small>
+
+
+                <h1 class="display-5 fw-bold mt-2">
+
+                    {{ post.title }}
+
+                </h1>
+
+            </div>
+
+
+            <div class="blog-content">
+
+                {{ post.content|linebreaks }}
+
+            </div>
+
+
+            <hr class="my-5">
+
+
+            <a
+                href="/blog/"
+                class="btn btn-outline-primary"
+            >
+
+                <i class="bi bi-arrow-left me-2"></i>
+
+                Back to Blog
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

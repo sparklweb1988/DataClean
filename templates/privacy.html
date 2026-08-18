@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+
+{% block title %}
+Privacy Policy - DataClean Pro
+{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-9">
+
+            <div class="text-center mb-5">
+
+                <span class="badge bg-primary-subtle text-primary mb-3">
+                    Privacy
+                </span>
+
+                <h1 class="fw-bold">
+                    Privacy Policy
+                </h1>
+
+                <p class="text-muted">
+                    Last updated: {% now "F d, Y" %}
+                </p>
+
+            </div>
+
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body p-4 p-md-5">
+
+                    <h4 class="fw-bold">
+                        1. Introduction
+                    </h4>
+
+                    <p class="text-muted">
+                        DataClean Pro respects your privacy and is
+                        committed to protecting the information you
+                        provide while using our platform.
+                    </p>
+
+
+                    <h4 class="fw-bold mt-4">
+                        2. Information We Collect
+                    </h4>
+
+                    <p class="text-muted">
+                        When you create an account, we may collect
+                        information such as your name, email address
+                        and account credentials.
+                    </p>
+
+
+                    <h4 class="fw-bold mt-4">
+                        3. Uploaded Data
+                    </h4>
+
+                    <p class="text-muted">
+                        DataClean Pro may process files that you upload
+                        for the purpose of cleaning and transforming
+                        your datasets.
+                    </p>
+
+                    <p class="text-muted">
+                        You should not upload confidential, sensitive
+                        or personal information unless you have the
+                        appropriate authorization to do so.
+                    </p>
+
+
+                    <h4 class="fw-bold mt-4">
+                        4. Payments
+                    </h4>
+
+                    <p class="text-muted">
+                        Payments may be processed through third-party
+                        payment providers. We do not store your full
+                        card or payment credentials on our servers.
+                    </p>
+
+
+                    <h4 class="fw-bold mt-4">
+                        5. Account Security
+                    </h4>
+
+                    <p class="text-muted">
+                        You are responsible for keeping your account
+                        credentials secure and should notify us if you
+                        believe your account has been accessed without
+                        authorization.
+                    </p>
+
+
+                    <h4 class="fw-bold mt-4">
+                        6. Changes to This Policy
+                    </h4>
+
+                    <p class="text-muted">
+                        We may update this Privacy Policy from time to
+                        time. Any changes will be reflected on this page.
+                    </p>
+
+
+                    <h4 class="fw-bold mt-4">
+                        7. Contact
+                    </h4>
+
+                    <p class="text-muted mb-0">
+                        If you have questions about this Privacy Policy,
+                        please contact us through our
+                        <a href="{% url 'contact' %}">
+                            contact page
+                        </a>.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,304 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+Manage Blog - DataClean Pro
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container-fluid py-4">
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+
+            <h2 class="fw-bold mb-1">
+                Blog Posts
+            </h2>
+
+            <p class="text-muted mb-0">
+                Create and manage your published articles.
+            </p>
+
+        </div>
+
+
+        <a
+            href="/admin-dashboard/blog/create/"
+            class="btn btn-primary"
+        >
+
+            <i class="bi bi-plus-lg me-1"></i>
+
+            New Post
+
+        </a>
+
+    </div>
+
+
+    <!-- =====================================================
+         BLOG CARDS
+    ====================================================== -->
+
+    <div class="row g-4">
+
+        {% for post in posts %}
+
+        <!-- BLOG CARD -->
+
+        <div class="col-xl-4 col-lg-4 col-md-6">
+
+            <div class="card border-0 shadow-sm h-100 overflow-hidden">
+
+
+                <!-- =================================================
+                     FEATURED IMAGE
+                ================================================== -->
+
+                {% if post.featured_image %}
+
+                    <img
+                        src="{{ post.featured_image.url }}"
+                        class="card-img-top"
+                        alt="{{ post.title }}"
+                        style="
+                            height: 220px;
+                            object-fit: cover;
+                        "
+                    >
+
+                {% else %}
+
+                    <div
+                        class="bg-light d-flex align-items-center justify-content-center"
+                        style="height: 220px;"
+                    >
+
+                        <div class="text-center text-muted">
+
+                            <i class="bi bi-image fs-1"></i>
+
+                            <p class="mb-0 mt-2">
+                                No featured image
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                {% endif %}
+
+
+
+                <!-- =================================================
+                     CARD BODY
+                ================================================== -->
+
+                <div class="card-body p-4">
+
+
+                    <!-- TITLE -->
+
+                    <h5 class="fw-bold mb-2">
+
+                        {{ post.title }}
+
+                    </h5>
+
+
+
+                    <!-- SHORT DESCRIPTION -->
+
+                    <p class="text-muted mb-3">
+
+                        {% if post.excerpt %}
+
+                            {{ post.excerpt|truncatewords:25 }}
+
+                        {% elif post.description %}
+
+                            {{ post.description|truncatewords:25 }}
+
+                        {% elif post.content %}
+
+                            {{ post.content|striptags|truncatewords:25 }}
+
+                        {% else %}
+
+                            No description available.
+
+                        {% endif %}
+
+                    </p>
+
+
+
+                    <!-- =================================================
+                         META INFORMATION
+                    ================================================== -->
+
+                    <div class="small text-muted mb-3">
+
+                        <div class="d-flex align-items-center mb-1">
+
+                            <i class="bi bi-person me-2"></i>
+
+                            {{ post.author.username }}
+
+                        </div>
+
+
+                        <div class="d-flex align-items-center">
+
+                            <i class="bi bi-calendar3 me-2"></i>
+
+                            {{ post.created_at|date:"M d, Y" }}
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- =================================================
+                     CARD FOOTER / ACTIONS
+                ================================================== -->
+
+                <div class="card-footer bg-white border-0 px-4 pb-4">
+
+
+                    <div class="d-flex gap-2">
+
+
+                        <!-- VIEW -->
+
+                        <a
+                            href="/blog/{{ post.slug }}/"
+                            class="btn btn-sm btn-outline-secondary flex-grow-1"
+                            target="_blank"
+                        >
+
+                            <i class="bi bi-eye me-1"></i>
+
+                            View
+
+                        </a>
+
+
+
+                        <!-- EDIT -->
+
+                        <a
+                            href="/admin-dashboard/blog/{{ post.pk }}/edit/"
+                            class="btn btn-sm btn-outline-primary flex-grow-1"
+                        >
+
+                            <i class="bi bi-pencil me-1"></i>
+
+                            Edit
+
+                        </a>
+
+
+
+                        <!-- DELETE -->
+
+                        <a
+                            href="/admin-dashboard/blog/{{ post.pk }}/delete/"
+                            class="btn btn-sm btn-outline-danger"
+                            onclick="
+                                return confirm(
+                                    'Are you sure you want to delete this blog post?'
+                                );
+                            "
+                        >
+
+                            <i class="bi bi-trash"></i>
+
+                        </a>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+        {% empty %}
+
+
+        <!-- =====================================================
+             EMPTY STATE
+        ====================================================== -->
+
+        <div class="col-12">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body text-center py-5">
+
+
+                    <div class="mb-3">
+
+                        <i
+                            class="bi bi-journal-text"
+                            style="font-size: 4rem;"
+                        ></i>
+
+                    </div>
+
+
+                    <h4 class="fw-bold">
+                        No Blog Posts Yet
+                    </h4>
+
+
+                    <p class="text-muted">
+
+                        You haven't published any blog posts yet.
+
+                    </p>
+
+
+                    <a
+                        href="/admin-dashboard/blog/create/"
+                        class="btn btn-primary"
+                    >
+
+                        <i class="bi bi-plus-lg me-1"></i>
+
+                        Create Your First Post
+
+                    </a>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        {% endfor %}
+
+    </div>
+
+
+</div>
+
+{% endblock %}

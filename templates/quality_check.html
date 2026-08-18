@@ -1,0 +1,585 @@
+{% extends "base.html" %}
+
+{% block title %}
+Excel & CSV Quality Checker - DataClean Pro
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container py-5">
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <div class="text-center mb-5">
+
+        <span class="badge bg-primary mb-3">
+            FREE TOOL
+        </span>
+
+        <h1 class="fw-bold">
+             Excel & CSV Quality Checker
+        </h1>
+
+        <p class="text-muted mx-auto" style="max-width: 700px;">
+
+            Upload your Excel or CSV file and instantly discover
+            missing values, duplicate rows, blank cells and other
+            data quality problems.
+
+        </p>
+
+    </div>
+
+
+    {% if not checked %}
+
+        <!-- =================================================
+             UPLOAD
+        ================================================== -->
+
+        <div class="row justify-content-center">
+
+            <div class="col-lg-7">
+
+                <div class="card border-0 shadow-sm">
+
+                    <div class="card-body p-5">
+
+                        <div class="text-center mb-4">
+
+                            <i
+                                class="bi bi-file-earmark-spreadsheet text-primary"
+                                style="font-size: 4rem;"
+                            ></i>
+
+                            <h4 class="fw-bold mt-3">
+                                Check Your Data Quality
+                            </h4>
+
+                            <p class="text-muted">
+                                Maximum free file size: 10 MB
+                            </p>
+
+                        </div>
+
+
+                        <form
+                            method="post"
+                            enctype="multipart/form-data"
+                        >
+
+                            {% csrf_token %}
+
+
+                            <div class="mb-4">
+
+                                <label
+                                    for="file"
+                                    class="form-label fw-semibold"
+                                >
+                                    Select Excel or CSV file
+                                </label>
+
+                                <input
+                                    type="file"
+                                    name="file"
+                                    id="file"
+                                    class="form-control form-control-lg"
+                                    accept=".csv,.xlsx,.xls"
+                                    required
+                                >
+
+                                <div class="form-text">
+
+                                    Supported formats:
+                                    CSV, XLSX and XLS
+
+                                </div>
+
+                            </div>
+
+
+                            <button
+                                type="submit"
+                                class="btn btn-primary btn-lg w-100"
+                            >
+
+                                <i class="bi bi-search me-2"></i>
+
+                                Check Data Quality
+
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             FEATURES
+        ================================================== -->
+
+        <div class="row g-4 mt-5">
+
+            <div class="col-md-4">
+
+                <div class="text-center">
+
+                    <i
+                        class="bi bi-copy text-primary fs-1"
+                    ></i>
+
+                    <h5 class="fw-bold mt-3">
+                        Duplicate Detection
+                    </h5>
+
+                    <p class="text-muted">
+                        Find duplicate rows in your dataset.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-4">
+
+                <div class="text-center">
+
+                    <i
+                        class="bi bi-exclamation-circle text-warning fs-1"
+                    ></i>
+
+                    <h5 class="fw-bold mt-3">
+                        Missing Data
+                    </h5>
+
+                    <p class="text-muted">
+                        Identify missing and blank cells.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-4">
+
+                <div class="text-center">
+
+                    <i
+                        class="bi bi-bar-chart text-success fs-1"
+                    ></i>
+
+                    <h5 class="fw-bold mt-3">
+                        Quality Score
+                    </h5>
+
+                    <p class="text-muted">
+                        Get an instant overview of your data quality.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+    {% else %}
+
+
+        <!-- =================================================
+             RESULTS
+        ================================================== -->
+
+        <div class="mb-4">
+
+            <a
+                href="{% url 'quality_check' %}"
+                class="btn btn-outline-primary"
+            >
+
+                <i class="bi bi-arrow-left me-1"></i>
+
+                Check Another File
+
+            </a>
+
+        </div>
+
+
+        <!-- FILE -->
+
+        <div class="card border-0 shadow-sm mb-4">
+
+            <div class="card-body">
+
+                <div class="d-flex align-items-center">
+
+                    <i
+                        class="bi bi-file-earmark-spreadsheet text-success fs-1 me-3"
+                    ></i>
+
+                    <div>
+
+                        <h5 class="fw-bold mb-1">
+                            {{ filename }}
+                        </h5>
+
+                        <small class="text-muted">
+                            Quality analysis completed
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- QUALITY SCORE -->
+
+        <div class="card border-0 shadow-sm mb-4">
+
+            <div class="card-body text-center py-5">
+
+                <p class="text-muted mb-2">
+                    Overall Data Quality Score
+                </p>
+
+                <div
+                    class="display-2 fw-bold text-{{ quality_class }}"
+                >
+                    {{ quality_score }}%
+                </div>
+
+                <span
+                    class="badge bg-{{ quality_class }} fs-6 mt-2"
+                >
+                    {{ quality_status }}
+                </span>
+
+                <div
+                    class="progress mt-4 mx-auto"
+                    style="max-width: 600px; height: 12px;"
+                >
+
+                    <div
+                        class="progress-bar bg-{{ quality_class }}"
+                        style="width: {{ quality_score }}%;"
+                    ></div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             STATISTICS
+        ================================================== -->
+
+        <div class="row g-4 mb-4">
+
+
+            <div class="col-md-4 col-lg-3">
+
+                <div class="card border-0 shadow-sm h-100">
+
+                    <div class="card-body">
+
+                        <small class="text-muted">
+                            Total Rows
+                        </small>
+
+                        <h3 class="fw-bold mt-2">
+                            {{ total_rows|default:0 }}
+                        </h3>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-4 col-lg-3">
+
+                <div class="card border-0 shadow-sm h-100">
+
+                    <div class="card-body">
+
+                        <small class="text-muted">
+                            Total Columns
+                        </small>
+
+                        <h3 class="fw-bold mt-2">
+                            {{ total_columns|default:0 }}
+                        </h3>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            
+
+
+            <div class="col-md-4 col-lg-3">
+
+                <div class="card border-0 shadow-sm h-100">
+
+                    <div class="card-body">
+
+                        <small class="text-muted">
+                            Blank Cells
+                        </small>
+
+                        <h3 class="fw-bold mt-2 text-warning">
+                            {{ blank_cells|default:0 }}
+                        </h3>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-4 col-lg-3">
+
+                <div class="card border-0 shadow-sm h-100">
+
+                    <div class="card-body">
+
+                        <small class="text-muted">
+                            Duplicate Rows
+                        </small>
+
+                        <h3 class="fw-bold mt-2 text-danger">
+                            {{ duplicate_rows|default:0 }}
+                        </h3>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-4 col-lg-3">
+
+                <div class="card border-0 shadow-sm h-100">
+
+                    <div class="card-body">
+
+                        <small class="text-muted">
+                            Empty Rows
+                        </small>
+
+                        <h3 class="fw-bold mt-2">
+                            {{ empty_rows|default:0 }}
+                        </h3>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-4 col-lg-3">
+
+                <div class="card border-0 shadow-sm h-100">
+
+                    <div class="card-body">
+
+                        <small class="text-muted">
+                            Empty Columns
+                        </small>
+
+                        <h3 class="fw-bold mt-2">
+                            {{ empty_columns|default:0 }}
+                        </h3>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-4 col-lg-3">
+
+                <div class="card border-0 shadow-sm h-100">
+
+                    <div class="card-body">
+
+                        <small class="text-muted">
+                            Completeness
+                        </small>
+
+                        <h3 class="fw-bold mt-2 text-success">
+                            {{ completeness }}%
+                        </h3>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             COLUMN ANALYSIS
+        ================================================== -->
+
+        <div class="card border-0 shadow-sm mb-4">
+
+            <div class="card-body">
+
+                <h5 class="fw-bold mb-4">
+                    Column Quality Analysis
+                </h5>
+
+
+                <div class="table-responsive">
+
+                    <table class="table table-hover align-middle">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Column
+                                </th>
+
+                                <th>
+                                    Data Type
+                                </th>
+
+                                <th>
+                                    Missing
+                                </th>
+
+                                <th>
+                                    Unique
+                                </th>
+
+                              
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            {% for column in columns %}
+
+                                <tr>
+
+                                    <td class="fw-semibold">
+                                        {{ column.name }}
+                                    </td>
+
+                                    <td>
+                                        <span class="badge bg-light text-dark">
+                                            {{ column.dtype }}
+                                        </span>
+                                    </td>
+
+                                    <td>
+
+                                        {% if column.missing > 0 %}
+
+                                            <span class="text-danger fw-semibold">
+                                                {{ column.missing }}
+                                            </span>
+
+                                        {% else %}
+
+                                            <span class="text-success">
+                                                0
+                                            </span>
+
+                                        {% endif %}
+
+                                    </td>
+
+                                    <td>
+                                        {{ column.unique }}
+                                    </td>
+
+                                    
+                                </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             CTA
+        ================================================== -->
+
+        <div class="card border-0 shadow-sm bg-primary text-white">
+
+            <div class="card-body text-center py-5">
+
+                <i class="bi bi-stars fs-1"></i>
+
+                <h3 class="fw-bold mt-3">
+                    Ready to Clean Your Data?
+                </h3>
+
+                <p class="mb-4">
+                    DataClean Pro can automatically remove
+                    duplicates, clean whitespace, handle missing
+                    values and prepare your data for analysis.
+                </p>
+
+                <a
+                    href="{% url 'register' %}"
+                    class="btn btn-light btn-lg px-4"
+                >
+
+                    Create Free Account
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

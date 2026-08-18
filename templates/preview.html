@@ -1,0 +1,659 @@
+{% extends "base.html" %}
+
+{% block title %}
+Dataset Preview - DataClean Pro
+{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <!-- ===================================================== -->
+    <!-- HEADER -->
+    <!-- ===================================================== -->
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+
+            <h2 class="fw-bold mb-1">
+                Dataset Preview
+            </h2>
+
+            <p class="text-muted mb-0">
+                {{ filename }}
+            </p>
+
+        </div>
+
+        <a
+            href="{% url 'upload' %}"
+            class="btn btn-outline-secondary"
+        >
+            Upload Another
+        </a>
+
+    </div>
+
+
+    <!-- ===================================================== -->
+    <!-- STATISTICS -->
+    <!-- ===================================================== -->
+
+    <div class="row g-3 mb-4">
+
+        <div class="col-md-3">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body">
+
+                    <small class="text-muted">
+                        Total Rows
+                    </small>
+
+                    <h3 class="fw-bold mb-0">
+                        {{ analysis.total_rows }}
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-3">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body">
+
+                    <small class="text-muted">
+                        Total Columns
+                    </small>
+
+                    <h3 class="fw-bold mb-0">
+                        {{ analysis.total_columns }}
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-3">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body">
+
+                    <small class="text-muted">
+                        Duplicate Rows
+                    </small>
+
+                    <h3 class="fw-bold mb-0">
+                        {{ analysis.duplicate_rows }}
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-3">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body">
+
+                    <small class="text-muted">
+                        Blank Cells
+                    </small>
+
+                    <h3 class="fw-bold mb-0">
+                        {{ analysis.blank_cells }}
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ===================================================== -->
+    <!-- PLAN -->
+    <!-- ===================================================== -->
+
+    <div class="alert alert-info">
+
+        <strong>
+            {{ plan.name }} Plan
+        </strong>
+
+        <br>
+
+        Maximum rows:
+        <strong>
+            {{ plan.max_rows|default:"Unlimited" }}
+        </strong>
+
+        &nbsp; | &nbsp;
+
+        Maximum columns:
+        <strong>
+            {{ plan.max_columns|default:"Unlimited" }}
+        </strong>
+
+    </div>
+
+
+    <!-- ===================================================== -->
+    <!-- CLEANING FORM -->
+    <!-- ===================================================== -->
+
+    <form
+        method="post"
+        action="{% url 'clean_dataset' %}"
+        id="cleanForm"
+    >
+
+        {% csrf_token %}
+
+        <input
+            type="hidden"
+            name="dataset_id"
+            value="{{ dataset_id }}"
+        >
+
+
+        <!-- ================================================= -->
+        <!-- MISSING VALUES -->
+        <!-- ================================================= -->
+
+        <div class="card border-0 shadow-sm mb-4">
+
+            <div class="card-header bg-white">
+
+                <div class="d-flex justify-content-between align-items-center">
+
+                    <div>
+
+                        <h5 class="fw-bold mb-1">
+                            Missing Values
+                        </h5>
+
+                        <small class="text-muted">
+                            Enter a value and apply it to all missing cells,
+                            or enter values individually.
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="card-body">
+
+                <!-- APPLY TO ALL -->
+
+                <div class="row align-items-end mb-4">
+
+                    <div class="col-md-8">
+
+                        <label
+                            for="apply_all_value"
+                            class="form-label fw-semibold"
+                        >
+                            Value to apply to all missing cells
+                        </label>
+
+                        <input
+                            type="text"
+                            id="apply_all_value"
+                            class="form-control"
+                            placeholder="Example: Unknown, 0, N/A, etc."
+                        >
+
+                    </div>
+
+
+                    <div class="col-md-4">
+
+                        <button
+                            type="button"
+                            id="applyAllButton"
+                            class="btn btn-primary w-100"
+                        >
+                            Apply to All Missing Cells
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- MISSING VALUE INPUTS -->
+
+                <div class="table-responsive">
+
+                    <table class="table table-bordered align-middle">
+
+                        <thead class="table-light">
+
+                            <tr>
+
+                                <th style="width: 30%;">
+                                    Column
+                                </th>
+
+                                <th style="width: 20%;">
+                                    Data Type
+                                </th>
+
+                                <th style="width: 50%;">
+                                    Replacement Value
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            {% for column in columns %}
+
+                                <tr>
+
+                                    <td>
+
+                                        <strong>
+                                            {{ column.name }}
+                                        </strong>
+
+                                        {% if column.missing > 0 %}
+
+                                            <span class="badge bg-warning text-dark ms-2">
+                                                {{ column.missing }} missing
+                                            </span>
+
+                                        {% endif %}
+
+                                    </td>
+
+
+                                    <td>
+
+                                        <span class="text-muted">
+                                            {{ column.dtype }}
+                                        </span>
+
+                                    </td>
+
+
+                                    <td>
+
+                                        {% if column.missing > 0 %}
+
+                                            <input
+                                                type="text"
+                                                class="form-control missing-input"
+                                                name="replacement_{{ column.index }}"
+                                                data-column-index="{{ column.index }}"
+                                                data-column-name="{{ column.name }}"
+                                                data-dtype="{{ column.dtype }}"
+                                                placeholder="Enter replacement"
+                                            >
+
+                                        {% else %}
+
+                                            <span class="text-muted">
+                                                No missing values
+                                            </span>
+
+                                        {% endif %}
+
+                                    </td>
+
+                                </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- CLEANING OPTIONS -->
+        <!-- ================================================= -->
+
+        <div class="card border-0 shadow-sm mb-4">
+
+            <div class="card-header bg-white">
+
+                <h5 class="fw-bold mb-0">
+                    Cleaning Options
+                </h5>
+
+            </div>
+
+
+            <div class="card-body">
+
+                <div class="row g-3">
+
+                    <!-- WHITESPACE -->
+
+                    <div class="col-md-6">
+
+                        <div class="form-check">
+
+                            <input
+                                class="form-check-input"
+                                type="checkbox"
+                                name="trim_whitespace"
+                                id="trim_whitespace"
+                                checked
+                            >
+
+                            <label
+                                class="form-check-label"
+                                for="trim_whitespace"
+                            >
+                                Remove unnecessary whitespace
+                            </label>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- COLUMN NAMES -->
+
+                    <div class="col-md-6">
+
+                        <div class="form-check">
+
+                            <input
+                                class="form-check-input"
+                                type="checkbox"
+                                name="normalize_column_names"
+                                id="normalize_column_names"
+                            >
+
+                            <label
+                                class="form-check-label"
+                                for="normalize_column_names"
+                            >
+                                Normalize column names
+                            </label>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- DUPLICATES -->
+
+                    <div class="col-md-6">
+
+                        <div class="form-check">
+
+                            <input
+                                class="form-check-input"
+                                type="checkbox"
+                                name="remove_duplicate_rows"
+                                id="remove_duplicate_rows"
+                            >
+
+                            <label
+                                class="form-check-label"
+                                for="remove_duplicate_rows"
+                            >
+                                Remove duplicate rows
+                            </label>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- EMPTY ROWS -->
+
+                    <div class="col-md-6">
+
+                        <div class="form-check">
+
+                            <input
+                                class="form-check-input"
+                                type="checkbox"
+                                name="remove_empty_rows"
+                                id="remove_empty_rows"
+                            >
+
+                            <label
+                                class="form-check-label"
+                                for="remove_empty_rows"
+                            >
+                                Remove empty rows
+                            </label>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- EMPTY COLUMNS -->
+
+                    <div class="col-md-6">
+
+                        <div class="form-check">
+
+                            <input
+                                class="form-check-input"
+                                type="checkbox"
+                                name="remove_empty_columns"
+                                id="remove_empty_columns"
+                            >
+
+                            <label
+                                class="form-check-label"
+                                for="remove_empty_columns"
+                            >
+                                Remove empty columns
+                            </label>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- DATA PREVIEW -->
+        <!-- ================================================= -->
+
+        <div class="card border-0 shadow-sm mb-4">
+
+            <div class="card-header bg-white">
+
+                <h5 class="fw-bold mb-0">
+                    Data Preview
+                </h5>
+
+                <small class="text-muted">
+                    Showing first 5 rows
+                </small>
+
+            </div>
+
+
+            <div class="card-body p-0">
+
+                <div class="table-responsive">
+
+                    <table class="table table-bordered table-hover mb-0">
+
+                        <thead class="table-light">
+
+                            <tr>
+
+                                {% for column in columns %}
+
+                                    <th>
+                                        {{ column.name }}
+                                    </th>
+
+                                {% endfor %}
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            {% for row in rows %}
+
+                                <tr>
+
+                                    {% for value in row %}
+
+                                        <td>
+
+                                            {% if value == "" %}
+
+                                                <span class="text-danger">
+                                                    Empty
+                                                </span>
+
+                                            {% else %}
+
+                                                {{ value }}
+
+                                            {% endif %}
+
+                                        </td>
+
+                                    {% endfor %}
+
+                                </tr>
+
+                            {% empty %}
+
+                                <tr>
+
+                                    <td
+                                        colspan="{{ columns|length }}"
+                                        class="text-center py-4 text-muted"
+                                    >
+                                        No data available.
+                                    </td>
+
+                                </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- SUBMIT -->
+        <!-- ================================================= -->
+
+        <div class="text-center mb-5">
+
+            <button
+                type="submit"
+                class="btn btn-success btn-lg px-5"
+            >
+
+                <i class="bi bi-stars me-2"></i>
+
+                Clean Dataset
+
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+
+<!-- ========================================================= -->
+<!-- APPLY ALL JAVASCRIPT -->
+<!-- ========================================================= -->
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const applyButton = document.getElementById(
+        "applyAllButton"
+    );
+
+    const applyAllInput = document.getElementById(
+        "apply_all_value"
+    );
+
+    const missingInputs = document.querySelectorAll(
+        ".missing-input"
+    );
+
+
+    applyButton.addEventListener(
+        "click",
+        function () {
+
+            const value = applyAllInput.value;
+
+            /*
+             * Allow empty values if the user deliberately
+             * wants to clear the fields.
+             */
+
+            missingInputs.forEach(function (input) {
+
+                input.value = value;
+
+            });
+
+        }
+    );
+
+});
+
+</script>
+
+{% endblock %}

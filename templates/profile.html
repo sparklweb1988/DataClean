@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}
+My Profile - DataClean Pro
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-7">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body p-4">
+
+                    <h4 class="fw-bold mb-4">
+                        Account Information
+                    </h4>
+
+
+                    <div class="mb-3">
+
+                        <label class="text-muted">
+                            Username
+                        </label>
+
+                        <div class="fw-semibold">
+                            {{ user.username }}
+                        </div>
+
+                    </div>
+
+
+                    <div class="mb-3">
+
+                        <label class="text-muted">
+                            Email
+                        </label>
+
+                        <div class="fw-semibold">
+                            {{ user.email }}
+                        </div>
+
+                    </div>
+
+
+                    <div class="mb-3">
+
+                        <label class="text-muted">
+                            Date Joined
+                        </label>
+
+                        <div class="fw-semibold">
+                            {{ user.date_joined|date:"F d, Y" }}
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

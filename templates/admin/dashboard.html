@@ -1,0 +1,204 @@
+{% extends "base.html" %}
+
+{% block title %}
+Admin Dashboard - DataClean Pro
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container-fluid py-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+
+            <h2 class="fw-bold">
+                Admin Dashboard
+            </h2>
+
+            <p class="text-muted">
+                Manage DataClean Pro.
+            </p>
+
+        </div>
+
+
+        <a
+            href="/admin-dashboard/blog/create/"
+            class="btn btn-primary"
+        >
+
+            <i class="bi bi-plus-lg me-1"></i>
+
+            New Blog Post
+
+        </a>
+
+    </div>
+
+
+    <!-- STATISTICS -->
+
+    <div class="row g-4">
+
+
+        <div class="col-md-3">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body">
+
+                    <i class="bi bi-people fs-2 text-primary"></i>
+
+                    <p class="text-muted mb-1 mt-2">
+                        Total Users
+                    </p>
+
+                    <h2 class="fw-bold">
+                        {{ total_users|default:0 }}
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-3">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body">
+
+                    <i class="bi bi-cash-stack fs-2 text-success"></i>
+
+                    <p class="text-muted mb-1 mt-2">
+                        Total Revenue
+                    </p>
+
+                    <h2 class="fw-bold">
+                        ₦{{ total_revenue|default:0|floatformat:0 }}
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-3">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body">
+
+                    <i class="bi bi-credit-card fs-2 text-warning"></i>
+
+                    <p class="text-muted mb-1 mt-2">
+                        Successful Payments
+                    </p>
+
+                    <h2 class="fw-bold">
+                        {{ total_payments|default:0 }}
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-3">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body">
+
+                    <i class="bi bi-journal-text fs-2 text-info"></i>
+
+                    <p class="text-muted mb-1 mt-2">
+                        Blog Posts
+                    </p>
+
+                    <h2 class="fw-bold">
+                        {{ total_posts|default:0 }}
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- QUICK ACTIONS -->
+
+    <div class="row g-4 mt-2">
+
+
+        <div class="col-md-6">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body p-4">
+
+                    <h5 class="fw-bold">
+                        Blog Management
+                    </h5>
+
+                    <p class="text-muted">
+                        Create, edit and delete published blog posts.
+                    </p>
+
+                    <a
+                        href="/admin-dashboard/blog/"
+                        class="btn btn-primary"
+                    >
+                        Manage Blog
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-6">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body p-4">
+
+                    <h5 class="fw-bold">
+                        Django Administration
+                    </h5>
+
+                    <p class="text-muted">
+                        Manage users and database records.
+                    </p>
+
+                    <a
+                        href="/django-admin/"
+                        class="btn btn-outline-dark"
+                    >
+                        Open Django Admin
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

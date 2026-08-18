@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block title %}
+Dataset Cleaned - DataClean Pro
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container-fluid py-5">
+
+    <div class="text-center mb-5">
+
+        <div class="text-success">
+
+            <i class="bi bi-check-circle-fill display-3"></i>
+
+        </div>
+
+        <h1 class="fw-bold mt-3">
+            Your Data Has Been Cleaned
+        </h1>
+
+        <p class="text-muted">
+            Your cleaned dataset is ready for download.
+        </p>
+
+    </div>
+
+
+    <!-- REPORT -->
+
+    <div class="row justify-content-center mb-4">
+
+        <div class="col-lg-8">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body">
+
+                    <h5 class="fw-bold mb-4">
+                        Cleaning Report
+                    </h5>
+
+
+                    {% if report %}
+
+                        {% for key, value in report.items %}
+
+                            <div class="d-flex justify-content-between border-bottom py-2">
+
+                                <span class="text-muted">
+                                    {{ key|title }}
+                                </span>
+
+                                <strong>
+                                    {{ value }}
+                                </strong>
+
+                            </div>
+
+                        {% endfor %}
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- DOWNLOAD -->
+
+    <div class="text-center">
+
+        <a
+            href="/download/{{ output_filename }}/"
+            class="btn btn-success btn-lg"
+        >
+
+            <i class="bi bi-download me-2"></i>
+
+            Download Cleaned Excel
+
+        </a>
+
+
+        <a
+            href="/upload/"
+            class="btn btn-outline-primary btn-lg ms-2"
+        >
+            Clean Another Dataset
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}
